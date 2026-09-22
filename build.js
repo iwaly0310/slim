@@ -80,7 +80,7 @@ function layout({ title, description, canonical, body, ogImage, narrow, jsonld }
 <link rel="apple-touch-icon" href="/assets/img/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
 <link rel="stylesheet" href="/assets/style.css">
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script>` : ''}
 </head>
@@ -88,7 +88,7 @@ ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script
 <a class="skip" href="#main">跳到主要內容</a>
 <header class="top">
   <div class="wrap top-in">
-    <a class="brand" href="/"><img src="/assets/img/logo-72.png" alt="" width="40" height="40"><span><b>宏謙</b>減重照護指南</span></a>
+    <a class="brand" href="/"><img src="/assets/img/logo-72.png" alt="" width="40" height="40"><span><b>宏謙</b>健康減重 照護指南</span></a>
     <nav class="nav" aria-label="主選單">
       <a href="/start/">開始前</a>
       <a href="/during/">療程中</a>

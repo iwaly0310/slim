@@ -29,7 +29,7 @@ p{margin:0 0 14px}
 /* hero */
 .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;padding-block:36px 10px}
 .eyebrow{display:inline-block;font-size:13px;letter-spacing:.14em;color:var(--navy);font-weight:700}
-.hero h1{font-family:"Noto Serif TC","Noto Sans TC",serif;font-size:clamp(30px,4.4vw,46px);color:var(--deep);margin:10px 0 14px}
+.hero h1{font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;font-weight:900;letter-spacing:.02em;font-size:clamp(30px,4.2vw,44px);color:var(--deep);margin:10px 0 14px}
 .lede{font-size:18px;color:var(--ink-2)}
 .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
 .hero-img{margin:0}
