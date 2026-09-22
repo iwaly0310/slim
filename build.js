@@ -1,4 +1,4 @@
-// 宏謙減重照護指南 — 靜態網站產生器
+// 宏謙健康減重指南 — 靜態網站產生器
 // 用法：node build.js  → 輸出到 docs/（GitHub Pages 讀這個資料夾）
 const fs = require('fs');
 const path = require('path');
@@ -88,7 +88,7 @@ ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script
 <a class="skip" href="#main">跳到主要內容</a>
 <header class="top">
   <div class="wrap top-in">
-    <a class="brand" href="/"><img src="/assets/img/logo-72.png" alt="" width="40" height="40"><span><b>宏謙</b>健康減重 照護指南</span></a>
+    <a class="brand" href="/"><img src="/assets/img/logo-72.png" alt="" width="40" height="40"><span><b>宏謙</b>健康減重指南</span></a>
     <nav class="nav" aria-label="主選單">
       <a href="/start/">開始前</a>
       <a href="/during/">療程中</a>
@@ -230,7 +230,7 @@ ${ctaBand()}`;
 <nav class="crumbs"><a href="/">首頁</a> › 全部文章</nav>
 <header class="page-head"><h1>全部文章</h1><p class="lede">共 ${articles.length} 篇，依主題分類。每篇都由宏謙醫療團隊撰寫與審閱，並註明更新日期。</p></header>
 ${CATS.map(c => { const list = articles.filter(a => a.category === c.id); return list.length ? `<section><div class="h2"><h2>${esc(c.name)}</h2><small>${esc(c.desc)}</small></div>${cardGrid(list)}</section>` : ''; }).join('\n')}`;
-  write('articles/index.html', layout({ title: '全部文章', description: '宏謙減重照護指南全部衛教文章', canonical: '/articles/', body }));
+  write('articles/index.html', layout({ title: '全部文章', description: '宏謙健康減重指南全部衛教文章', canonical: '/articles/', body }));
   urls.push('/articles/');
 }
 

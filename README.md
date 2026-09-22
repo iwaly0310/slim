@@ -1,4 +1,4 @@
-# 宏謙減重照護指南（slim.hongchienclinic.com.tw）
+# 宏謙健康減重指南（slim.hongchienclinic.com.tw）
 
 靜態衛教網站，由 `build.js` 從 `content/` 產生到 `docs/`，以 GitHub Pages 發佈。
 
