@@ -137,3 +137,15 @@ section{margin-top:52px}
   .nav{font-size:14px;gap:2px 12px}
 }
 @media (prefers-reduced-motion:reduce){.card{transition:none}}
+
+/* figures & exercise cards */
+.fig{margin:18px 0}
+.fig img{width:100%;height:auto;background:#fffdf8;border:1px solid var(--line);border-radius:var(--r)}
+.fig figcaption{font-size:13.5px;color:var(--ink-2);margin-top:8px;text-align:center}
+.ex-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:18px 0}
+.ex{background:var(--paper);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px 12px}
+.ex img{width:100%;height:auto;background:#f8f3ea;border-radius:10px;margin-bottom:8px}
+.ex h4{margin:0 0 6px;font-size:17px;color:var(--deep)}
+.ex p{font-size:15px;line-height:1.7;margin:0 0 6px}
+.ex .alt{font-size:13.5px;color:var(--ink-2);margin:0}
+@media (max-width:560px){.ex-grid{grid-template-columns:1fr}}

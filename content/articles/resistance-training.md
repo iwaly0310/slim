@@ -20,14 +20,14 @@ summary: 用藥超過兩個月後，運動是最重要的功課。不需要健�
 
 每個動作做 10 到 12 下為一組，做 2 到 3 組，組間休息 60 秒。全部做完約 20 分鐘。
 
-| 動作 | 練到哪裡 | 做不到時的替代 |
-|---|---|---|
-| 椅子深蹲（坐下站起，不用手撐） | 大腿、臀部 | 手扶桌緣 |
-| 靠牆坐（背貼牆、大腿與地面平行，撐 20 到 40 秒） | 大腿 | 蹲高一點 |
-| 跪姿伏地挺身 | 胸、手臂 | 靠牆推 |
-| 彈力帶划船（或雙手各提一瓶水，手肘往後拉） | 背 | 減輕重量 |
-| 提踵（踮腳尖） | 小腿 | 扶著牆做 |
-| 棒式（撐 20 到 30 秒） | 核心 | 膝蓋著地 |
+<div class="ex-grid">
+<div class="ex"><img src="/assets/img/ex/chair-squat.svg" alt="椅子深蹲示意圖" width="240" height="180"><h4>1. 椅子深蹲</h4><p>站在椅子前，臀部往後坐到快碰到椅面再站起，不用手撐。練大腿、臀部。</p><p class="alt">做不到時：手扶桌緣。</p></div>
+<div class="ex"><img src="/assets/img/ex/wall-sit.svg" alt="靠牆坐示意圖" width="240" height="180"><h4>2. 靠牆坐</h4><p>背貼牆、大腿與地面平行、膝蓋 90 度，撐 20 到 40 秒。練大腿。</p><p class="alt">做不到時：蹲高一點。</p></div>
+<div class="ex"><img src="/assets/img/ex/knee-pushup.svg" alt="跪姿伏地挺身示意圖" width="240" height="180"><h4>3. 跪姿伏地挺身</h4><p>膝蓋著地，身體從頭到膝蓋保持一直線，胸口往地板下降再推起。練胸、手臂。</p><p class="alt">做不到時：站著靠牆推。</p></div>
+<div class="ex"><img src="/assets/img/ex/band-row.svg" alt="彈力帶划船示意圖" width="240" height="180"><h4>4. 彈力帶划船</h4><p>坐姿、彈力帶套在腳底，手肘往後拉到身側，肩胛骨夾緊。沒有彈力帶就雙手各提一瓶水。練背。</p><p class="alt">做不到時：減輕重量。</p></div>
+<div class="ex"><img src="/assets/img/ex/calf-raise.svg" alt="提踵示意圖" width="240" height="180"><h4>5. 提踵</h4><p>站直，慢慢踮起腳尖再放下，可以一手扶牆。練小腿。</p><p class="alt">做不到時：扶著牆做。</p></div>
+<div class="ex"><img src="/assets/img/ex/plank.svg" alt="棒式示意圖" width="240" height="180"><h4>6. 棒式</h4><p>手肘撐地，從肩膀到腳踝保持一直線，撐 20 到 30 秒。練核心。</p><p class="alt">做不到時：膝蓋著地。</p></div>
+</div>
 
 **怎麼加量**：同一組動作連續兩週都能輕鬆做完 3 組 12 下，就把重量加一點（水瓶換大、彈力帶換緊），或把次數加到 15 下。
 
