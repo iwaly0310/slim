@@ -1,7 +1,7 @@
 // 本機預覽：node serve.js  →  http://localhost:5173
 const http = require('http'), fs = require('fs'), path = require('path');
 const root = path.join(__dirname, 'docs');
-const types = { '.html':'text/html; charset=utf-8', '.css':'text/css', '.js':'text/javascript', '.png':'image/png', '.jpg':'image/jpeg', '.svg':'image/svg+xml', '.xml':'application/xml', '.txt':'text/plain', '.ico':'image/x-icon' };
+const types = { '.html':'text/html; charset=utf-8', '.css':'text/css', '.js':'text/javascript', '.png':'image/png', '.jpg':'image/jpeg', '.svg':'image/svg+xml', '.webp':'image/webp', '.xml':'application/xml', '.txt':'text/plain', '.ico':'image/x-icon' };
 http.createServer((req, res) => {
   let p = decodeURIComponent(req.url.split('?')[0]);
   let f = path.join(root, p);
