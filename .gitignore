@@ -1,2 +1,4 @@
 node_modules/
 .claude/
+stats/umami_key.txt
+stats/reports/
