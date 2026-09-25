@@ -81,6 +81,7 @@ function layout({ title, description, canonical, body, ogImage, narrow, jsonld }
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<script defer src="https://cloud.umami.is/script.js" data-website-id="7cadf1bf-b05b-4c80-a86a-5e7b7192b3e0"></script>
 <link rel="stylesheet" href="/assets/style.css">
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script>` : ''}
 </head>
