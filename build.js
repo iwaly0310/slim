@@ -30,6 +30,21 @@ function parseFrontmatter(raw) {
   return { meta, body: m[2] };
 }
 
+// 標題只在標點後換行，避免斷在詞中間
+const phr = t => esc(t).split(/(?<=[，：？、。！）」])/).filter(Boolean).map(x => `<span class="ph">${x}</span>`).join('');
+const wrapTables = h => h.replace(/<table>[\s\S]*?<\/table>/g, t => {
+  const ths = [...t.matchAll(/<th[^>]*>([\s\S]*?)<\/th>/g)].map(m => m[1].replace(/<[^>]+>/g, '').trim());
+  let i = 0;
+  const body = t.replace(/<tr>([\s\S]*?)<\/tr>/g, (row, inner) => inner.includes('<td') ? '<tr>' + inner.replace(/<td([^>]*)>/g, (m, attrs) => '<td' + attrs + ' data-th="' + (ths[i++ % ths.length] || '') + '">') + '</tr>' : row);
+  return '<div class="tbl">' + body + '</div>';
+});
+const IC = {
+  line: '<svg class="i fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.5s6-3.5 8.2-6.1C21.9 14.2 22 12.6 22 11c0-4.4-4.5-8-10-8zm-3.8 10.5H6.3a.5.5 0 0 1-.5-.5V9a.5.5 0 0 1 1 0v3.5h1.4a.5.5 0 0 1 0 1zm1.9-.5a.5.5 0 0 1-1 0V9a.5.5 0 0 1 1 0zm4.6 0a.5.5 0 0 1-.9.3l-2-2.7V13a.5.5 0 0 1-1 0V9a.5.5 0 0 1 .9-.3l2 2.7V9a.5.5 0 0 1 1 0zm3.1-2.5a.5.5 0 0 1 0 1h-1.4v1h1.4a.5.5 0 0 1 0 1h-1.9a.5.5 0 0 1-.5-.5V9a.5.5 0 0 1 .5-.5h1.9a.5.5 0 0 1 0 1h-1.4v1z"/></svg>',
+  ext: '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>',
+  arrow: '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+  menu: '<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>',
+};
+
 const readTime = text => Math.max(1, Math.round(text.replace(/\s/g, '').length / 400));
 
 // ---------- load content ----------
@@ -42,21 +57,23 @@ const articles = fs.readdirSync(path.join(ROOT, 'content', 'articles'))
     const raw = fs.readFileSync(path.join(ROOT, 'content', 'articles', f), 'utf8');
     const { meta, body } = parseFrontmatter(raw);
     const slug = f.replace(/\.md$/, '');
-    return { slug, ...meta, order: Number(meta.order || 99), phases: meta.phases || [], body, html: marked.parse(body), minutes: readTime(body) };
+    return { slug, ...meta, order: Number(meta.order || 99), phases: meta.phases || [], body, html: wrapTables(marked.parse(body)), minutes: readTime(body) };
   })
   .sort((a, b) => a.order - b.order || (b.date || '').localeCompare(a.date || ''));
 
 const faqRaw = fs.readFileSync(path.join(ROOT, 'content', 'faq.md'), 'utf8');
 const faqs = faqRaw.split(/^## /m).slice(1).map(block => {
   const [q, ...rest] = block.split(/\r?\n/);
-  return { q: q.trim(), a: marked.parse(rest.join('\n').trim()) };
+  return { q: q.trim(), a: wrapTables(marked.parse(rest.join('\n').trim())) };
 });
 
 const catById = Object.fromEntries(CATS.map(c => [c.id, c]));
 const phaseById = Object.fromEntries(PHASES.map(p => [p.id, p]));
 
 // ---------- layout ----------
+const nav = [['開始前', '/start/'], ['療程中', '/during/'], ['維持期', '/maintain/'], ['全部文章', '/articles/'], ['常見問題', '/faq/']];
 function layout({ title, description, canonical, body, ogImage, narrow, jsonld }) {
+  const cur = canonical && canonical.startsWith('/articles/') ? '/articles/' : canonical;
   const fullTitle = title ? `${title}｜${site.name}` : `${site.name}｜${site.tagline}`;
   const url = site.url + (canonical || '/');
   const og = site.url + (ogImage || '/assets/img/og.png');
@@ -80,43 +97,39 @@ function layout({ title, description, canonical, body, ogImage, narrow, jsonld }
 <link rel="apple-touch-icon" href="/assets/img/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
 <script defer src="https://cloud.umami.is/script.js" data-website-id="7cadf1bf-b05b-4c80-a86a-5e7b7192b3e0"></script>
 <link rel="stylesheet" href="/assets/style.css">
+<script src="/assets/site.js" defer></script>
 ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script>` : ''}
 </head>
 <body>
 <a class="skip" href="#main">跳到主要內容</a>
-<header class="top">
-  <div class="wrap top-in">
-    <a class="brand" href="/"><img src="/assets/img/logo-72.png" alt="" width="40" height="40"><span><b>宏謙</b>健康減重指南</span></a>
-    <nav class="nav" aria-label="主選單">
-      <a href="/start/">開始前</a>
-      <a href="/during/">療程中</a>
-      <a href="/maintain/">維持期</a>
-      <a href="/articles/">全部文章</a>
-      <a href="/faq/">常見問題</a>
-      <a class="ext" href="${site.clinic.website}">診所官網</a>
-    </nav>
+<header class="hdr" data-hdr>
+  <div class="hdr-in">
+    <a class="brand" href="/" aria-label="宏謙健康減重指南 首頁"><img src="/assets/img/logo-72.png" alt="" width="44" height="44"><span class="brand-t"><b>宏謙健康減重指南</b><small>宏謙聯合診所 衛教專區</small></span></a>
+    <nav class="nav" aria-label="主選單">${nav.map(([t, h]) => `<a href="${h}"${cur === h ? ' aria-current="page"' : ''}>${t}</a>`).join('')}<a class="ext" href="${site.clinic.website}">診所官網${IC.ext}</a></nav>
+    <a class="btn btn-line hdr-cta" href="${site.clinic.line}">${IC.line}<span>LINE 詢問</span></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="drawer" data-menu>${IC.menu}<span class="sr">開啟選單</span></button>
+  </div>
+  <div class="drawer" id="drawer" hidden data-drawer>
+    <nav class="drawer-nav" aria-label="行動版選單">${nav.map(([t, h], i) => `<a href="${h}" style="--i:${i}"><span class="n">0${i + 1}</span>${t}</a>`).join('')}<a href="${site.clinic.website}" style="--i:5"><span class="n">06</span>診所官網${IC.ext}</a></nav>
+    <div class="drawer-foot"><a class="btn btn-line" href="${site.clinic.line}">${IC.line}<span>用 LINE 詢問／預約</span></a></div>
   </div>
 </header>
 <main id="main" class="${narrow ? 'wrap narrow' : 'wrap'}">
 ${body}
 </main>
-<footer class="foot">
-  <div class="wrap foot-in">
-    <div>
-      <div class="foot-brand"><img src="/assets/img/logo-72.png" alt="" width="36" height="36"><b>${esc(site.clinic.name)}</b></div>
-      <p>${esc(site.clinic.address)}<br>電話 ${esc(site.clinic.phone)}　LINE ${esc(site.clinic.lineId)}</p>
-      <p class="hours">${esc(site.clinic.hours)}</p>
-      <p class="links"><a href="${site.clinic.website}">診所官網</a> · <a href="${site.clinic.fb}">Facebook</a> · <a href="${site.clinic.line}">LINE 官方帳號</a></p>
-    </div>
-    <div class="cta-box">
-      <p><b>想開始，或療程中有疑問？</b><br>用 LINE 告訴我們，個管師會協助安排門診與追蹤。</p>
-      <a class="btn" href="${site.clinic.line}">用 LINE 聯絡宏謙</a>
+<footer class="ftr">
+  <div class="wrap ftr-top">
+    <p class="ftr-big">把體重減下來，<br>也把<em>健康</em>留在身上。</p>
+    <div class="ftr-cols">
+      <div><h3>宏謙聯合診所</h3><p>${esc(site.clinic.address)}</p><p>${esc(site.clinic.phone)}</p><p><a href="${site.clinic.website}#hours">門診時間</a></p></div>
+      <div><h3>衛教專區</h3>${nav.map(([t, h]) => `<p><a href="${h}">${t}</a></p>`).join('')}</div>
+      <div><h3>聯絡我們</h3><p><a href="${site.clinic.line}">LINE ${esc(site.clinic.lineId)}</a></p><p><a href="${site.clinic.fb}">Facebook 粉絲專頁</a></p><p><a href="${site.clinic.website}">診所官網</a></p></div>
     </div>
   </div>
-  <div class="wrap disclaimer">${esc(site.disclaimer)}<br>© ${new Date().getFullYear()} ${esc(site.clinic.name)}</div>
+  <div class="wrap ftr-bot"><p>${esc(site.disclaimer)}</p><p>© ${new Date().getFullYear()} ${esc(site.clinic.name)}</p></div>
 </footer>
 </body>
 </html>`;
@@ -125,7 +138,7 @@ ${body}
 // ---------- components ----------
 const card = a => `<a class="card" href="/articles/${a.slug}/">
   <span class="pill">${esc(catById[a.category]?.name || a.category)}</span>
-  <h3>${esc(a.title)}</h3>
+  <h3>${phr(a.title)}</h3>
   <p>${esc(a.summary || '')}</p>
   <span class="meta">閱讀約 ${a.minutes} 分鐘</span>
 </a>`;
@@ -136,11 +149,11 @@ const phaseCards = () => `<div class="phases">${PHASES.map(p => `<a class="phase
   <span class="eyebrow">${esc(p.tagline)}</span>
   <h3>${esc(p.name)}</h3>
   <p>${esc(p.desc)}</p>
-  <span class="more">看這個階段的內容 →</span>
+  <span class="more">看這個階段的內容${IC.arrow}</span>
 </a>`).join('')}</div>`;
 
 const faqList = (list, open) => `<div class="faq">${list.map((f, i) => `<details${open && i === 0 ? ' open' : ''}>
-  <summary>${esc(f.q)}</summary>
+  <summary>${phr(f.q)}</summary>
   <div class="faq-a">${f.a}</div>
 </details>`).join('\n')}</div>`;
 
@@ -149,7 +162,7 @@ const ctaBand = () => `<section class="band">
     <h2>減重不是一個人的事</h2>
     <p>在宏謙，醫師、營養師與個管師分工照顧：醫師評估與調整治療，營養師為您做飲食規劃，個管師定期、主動關心您的狀況。我們有經驗豐富的團隊，幫您達成理想中的體重與健康。</p>
   </div>
-  <div class="band-actions"><a class="btn light" href="${site.clinic.line}">用 LINE 預約評估</a><a class="btn outline" href="${site.clinic.website}">查看門診時間</a></div>
+  <div class="band-actions"><a class="btn btn-line light" href="${site.clinic.line}">${IC.line}<span>用 LINE 預約評估</span></a><a class="btn outline" href="${site.clinic.website}">查看門診時間</a></div>
 </section>`;
 
 // ---------- pages ----------
@@ -170,7 +183,7 @@ const urls = ['/'];
     <span class="eyebrow">宏謙聯合診所 ・ 減重與代謝照護</span>
     <h1>把體重減下來，<br>也把健康留在身上。</h1>
     <p class="lede">這裡整理了宏謙減重門診在診間反覆說明的內容：療程前要知道的事、每一餐怎麼吃到足夠的蛋白質、不舒服時怎麼照顧自己、以及成果怎麼長期維持。由醫療團隊撰寫與審閱，隨門診經驗持續更新。</p>
-    <div class="hero-actions"><a class="btn" href="/start/">我正準備開始</a><a class="btn ghost" href="/during/">我在療程中</a></div>
+    <div class="hero-actions"><a class="btn btn-sun" href="/start/">我正準備開始${IC.arrow}</a><a class="btn ghost" href="/during/">我在療程中</a></div>
     <p class="hero-note">想先認識我們？醫師簡介、門診時間、交通方式都在 <a href="${site.clinic.website}">診所官網</a>。</p>
   </div>
   <figure class="hero-img"><img src="/assets/img/doctor-explain.jpg" alt="宏謙聯合診所院長在診間向患者說明報告" width="1000" height="750"><figcaption>報告不是印出來就交給您帶回家。每一份，都由醫師當面說明。</figcaption></figure>
@@ -244,7 +257,7 @@ for (const a of articles) {
 <article class="post">
   <header class="post-head">
     <span class="pill">${esc(catById[a.category]?.name || a.category)}</span>
-    <h1>${esc(a.title)}</h1>
+    <h1>${phr(a.title)}</h1>
     <p class="lede">${esc(a.summary || '')}</p>
     <p class="byline">${esc(site.author)}　·　更新於 ${esc(a.date || '')}　·　閱讀約 ${a.minutes} 分鐘</p>
   </header>
@@ -271,7 +284,7 @@ ${ctaBand()}`;
 }
 
 // 404
-write('404.html', layout({ title: '找不到這一頁', body: `<header class="page-head"><h1>找不到這一頁</h1><p class="lede">網址可能打錯了，或這篇文章已經移動。</p><p><a class="btn" href="/">回到首頁</a></p></header>` }));
+write('404.html', layout({ title: '找不到這一頁', body: `<header class="page-head"><h1>找不到這一頁</h1><p class="lede">網址可能打錯了，或這篇文章已經移動。</p><p><a class="btn btn-sun" href="/">回到首頁</a></p></header>` }));
 
 // sitemap
 fs.writeFileSync(path.join(OUT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `  <url><loc>${site.url}${u}</loc></url>`).join('\n')}\n</urlset>\n`);

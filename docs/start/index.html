@@ -18,24 +18,24 @@
 <link rel="apple-touch-icon" href="/assets/img/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
 <script defer src="https://cloud.umami.is/script.js" data-website-id="7cadf1bf-b05b-4c80-a86a-5e7b7192b3e0"></script>
 <link rel="stylesheet" href="/assets/style.css">
+<script src="/assets/site.js" defer></script>
 
 </head>
 <body>
 <a class="skip" href="#main">跳到主要內容</a>
-<header class="top">
-  <div class="wrap top-in">
-    <a class="brand" href="/"><img src="/assets/img/logo-72.png" alt="" width="40" height="40"><span><b>宏謙</b>健康減重指南</span></a>
-    <nav class="nav" aria-label="主選單">
-      <a href="/start/">開始前</a>
-      <a href="/during/">療程中</a>
-      <a href="/maintain/">維持期</a>
-      <a href="/articles/">全部文章</a>
-      <a href="/faq/">常見問題</a>
-      <a class="ext" href="https://hongchienclinic.com.tw">診所官網</a>
-    </nav>
+<header class="hdr" data-hdr>
+  <div class="hdr-in">
+    <a class="brand" href="/" aria-label="宏謙健康減重指南 首頁"><img src="/assets/img/logo-72.png" alt="" width="44" height="44"><span class="brand-t"><b>宏謙健康減重指南</b><small>宏謙聯合診所 衛教專區</small></span></a>
+    <nav class="nav" aria-label="主選單"><a href="/start/" aria-current="page">開始前</a><a href="/during/">療程中</a><a href="/maintain/">維持期</a><a href="/articles/">全部文章</a><a href="/faq/">常見問題</a><a class="ext" href="https://hongchienclinic.com.tw">診所官網<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a></nav>
+    <a class="btn btn-line hdr-cta" href="https://lin.ee/mIFpkdt"><svg class="i fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.5s6-3.5 8.2-6.1C21.9 14.2 22 12.6 22 11c0-4.4-4.5-8-10-8zm-3.8 10.5H6.3a.5.5 0 0 1-.5-.5V9a.5.5 0 0 1 1 0v3.5h1.4a.5.5 0 0 1 0 1zm1.9-.5a.5.5 0 0 1-1 0V9a.5.5 0 0 1 1 0zm4.6 0a.5.5 0 0 1-.9.3l-2-2.7V13a.5.5 0 0 1-1 0V9a.5.5 0 0 1 .9-.3l2 2.7V9a.5.5 0 0 1 1 0zm3.1-2.5a.5.5 0 0 1 0 1h-1.4v1h1.4a.5.5 0 0 1 0 1h-1.9a.5.5 0 0 1-.5-.5V9a.5.5 0 0 1 .5-.5h1.9a.5.5 0 0 1 0 1h-1.4v1z"/></svg><span>LINE 詢問</span></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="drawer" data-menu><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg><span class="sr">開啟選單</span></button>
+  </div>
+  <div class="drawer" id="drawer" hidden data-drawer>
+    <nav class="drawer-nav" aria-label="行動版選單"><a href="/start/" style="--i:0"><span class="n">01</span>開始前</a><a href="/during/" style="--i:1"><span class="n">02</span>療程中</a><a href="/maintain/" style="--i:2"><span class="n">03</span>維持期</a><a href="/articles/" style="--i:3"><span class="n">04</span>全部文章</a><a href="/faq/" style="--i:4"><span class="n">05</span>常見問題</a><a href="https://hongchienclinic.com.tw" style="--i:5"><span class="n">06</span>診所官網<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a></nav>
+    <div class="drawer-foot"><a class="btn btn-line" href="https://lin.ee/mIFpkdt"><svg class="i fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.5s6-3.5 8.2-6.1C21.9 14.2 22 12.6 22 11c0-4.4-4.5-8-10-8zm-3.8 10.5H6.3a.5.5 0 0 1-.5-.5V9a.5.5 0 0 1 1 0v3.5h1.4a.5.5 0 0 1 0 1zm1.9-.5a.5.5 0 0 1-1 0V9a.5.5 0 0 1 1 0zm4.6 0a.5.5 0 0 1-.9.3l-2-2.7V13a.5.5 0 0 1-1 0V9a.5.5 0 0 1 .9-.3l2 2.7V9a.5.5 0 0 1 1 0zm3.1-2.5a.5.5 0 0 1 0 1h-1.4v1h1.4a.5.5 0 0 1 0 1h-1.9a.5.5 0 0 1-.5-.5V9a.5.5 0 0 1 .5-.5h1.9a.5.5 0 0 1 0 1h-1.4v1z"/></svg><span>用 LINE 詢問／預約</span></a></div>
   </div>
 </header>
 <main id="main" class="wrap">
@@ -46,61 +46,61 @@
 <div class="h2"><h2>這個階段建議先讀</h2></div>
 <div class="grid"><a class="card" href="/articles/how-treatment-works/">
   <span class="pill">療程須知</span>
-  <h3>減重治療怎麼進行？從第一次門診到維持期的完整流程</h3>
+  <h3><span class="ph">減重治療怎麼進行？</span><span class="ph">從第一次門診到維持期的完整流程</span></h3>
   <p>第一次門診會做什麼、藥物治療怎麼開始、營養師和個管師什麼時候介入、多久回診一次。先看懂流程，治療就不會走一步猜一步。</p>
   <span class="meta">閱讀約 2 分鐘</span>
 </a>
 <a class="card" href="/articles/before-you-start/">
   <span class="pill">療程須知</span>
-  <h3>開始減重針之前，這些事要先告訴醫師</h3>
+  <h3><span class="ph">開始減重針之前，</span><span class="ph">這些事要先告訴醫師</span></h3>
   <p>哪些人適合、哪些狀況不能用、正在吃的藥要不要調整、懷孕與手術怎麼安排。開始前講清楚，治療才安全。</p>
   <span class="meta">閱讀約 2 分鐘</span>
 </a>
 <a class="card" href="/articles/protein-portions/">
   <span class="pill">飲食營養</span>
-  <h3>蛋白質要吃到「份數」：1 份等於 1 顆蛋，每天 10 到 13 份怎麼算</h3>
+  <h3><span class="ph">蛋白質要吃到「份數」</span><span class="ph">：</span><span class="ph">1 份等於 1 顆蛋，</span><span class="ph">每天 10 到 13 份怎麼算</span></h3>
   <p>用藥後吃得少，最怕減掉的是肌肉。宏謙診間用「份數」教蛋白質：1 份 7 克、等於 1 顆蛋，掌心大小的肉片算 2 份。這篇教您算自己的份數，也給您一天的範例。</p>
-  <span class="meta">閱讀約 2 分鐘</span>
+  <span class="meta">閱讀約 3 分鐘</span>
 </a>
 <a class="card" href="/articles/211-plate/">
   <span class="pill">飲食營養</span>
-  <h3>211 餐盤：減重期間每一餐的配法，外食也能用</h3>
+  <h3><span class="ph">211 餐盤：</span><span class="ph">減重期間每一餐的配法，</span><span class="ph">外食也能用</span></h3>
   <p>一半蔬菜、四分之一蛋白質、四分之一主食，蛋白質先吃。這篇把 211 餐盤講成自助餐、便當、麵店都能用的版本。</p>
   <span class="meta">閱讀約 3 分鐘</span>
 </a>
 <a class="card" href="/articles/hydration/">
   <span class="pill">飲食營養</span>
-  <h3>減重期間水要怎麼喝：分散到整天，別等口渴</h3>
+  <h3><span class="ph">減重期間水要怎麼喝：</span><span class="ph">分散到整天，</span><span class="ph">別等口渴</span></h3>
   <p>用藥後常常不覺得渴，卻更容易脫水、便祕、頭暈。個管師會幫您算好每天的量，這篇說明怎麼分配、什麼算數、什麼情況要注意。</p>
   <span class="meta">閱讀約 2 分鐘</span>
 </a>
 <a class="card" href="/articles/side-effects-care/">
   <span class="pill">不適照護</span>
-  <h3>噁心、胃脹、便祕、注射處紅腫：療程初期的不適怎麼照顧</h3>
+  <h3><span class="ph">噁心、</span><span class="ph">胃脹、</span><span class="ph">便祕、</span><span class="ph">注射處紅腫：</span><span class="ph">療程初期的不適怎麼照顧</span></h3>
   <p>適應期最常見的四種不適，大部分可以自己處理，也有幾種情況必須立刻就醫。這篇把「怎麼做」和「什麼時候要來」分開講清楚。</p>
   <span class="meta">閱讀約 3 分鐘</span>
 </a>
 <a class="card" href="/articles/fatty-liver-and-weight/">
   <span class="pill">脂肪肝與代謝</span>
-  <h3>脂肪肝與減重：肝有多油、有多硬，減重時要一起看</h3>
+  <h3><span class="ph">脂肪肝與減重：</span><span class="ph">肝有多油、</span><span class="ph">有多硬，</span><span class="ph">減重時要一起看</span></h3>
   <p>健檢上的「脂肪肝」三個字，常常被當成「回去減肥」就結束。其實它是代謝問題的一部分，減重時一起追蹤，才知道有沒有真的改善。</p>
   <span class="meta">閱讀約 2 分鐘</span>
 </a>
 <a class="card" href="/articles/sleep-and-weight/">
   <span class="pill">睡眠的重要</span>
-  <h3>睡眠的重要：睡不夠的人，減重會比較辛苦</h3>
+  <h3><span class="ph">睡眠的重要：</span><span class="ph">睡不夠的人，</span><span class="ph">減重會比較辛苦</span></h3>
   <p>睡眠不足會讓人更餓、更想吃高熱量的東西，同樣的飲食控制下減掉的脂肪也比較少。這篇說明為什麼，以及減重期間怎麼把睡眠顧好。</p>
   <span class="meta">閱讀約 2 分鐘</span>
 </a>
 <a class="card" href="/articles/research-ntuh-cancer-risk/">
   <span class="pill">研究新知</span>
-  <h3>研究怎麼說：台大醫院研究，肥胖者使用腸泌素，肥胖相關癌症風險下降四成</h3>
+  <h3><span class="ph">研究怎麼說：</span><span class="ph">台大醫院研究，</span><span class="ph">肥胖者使用腸泌素，</span><span class="ph">肥胖相關癌症風險下降四成</span></h3>
   <p>2026 年 8 月台大醫院發表在《Annals of Oncology》的跨國研究：無糖尿病的肥胖成年人使用 GLP-1 類藥物，13 種肥胖相關癌症的整體發生風險比只做飲食運動諮詢的人低 41%。這篇說明研究怎麼做、看到什麼、該怎麼解讀。</p>
   <span class="meta">閱讀約 3 分鐘</span>
 </a>
 <a class="card" href="/articles/event-fibroscan-2026-09/">
   <span class="pill">診所活動紀實</span>
-  <h3>診所活動紀實：與諾和諾德合作的脂肪肝篩檢日</h3>
+  <h3><span class="ph">診所活動紀實：</span><span class="ph">與諾和諾德合作的脂肪肝篩檢日</span></h3>
   <p>2026 年 9 月 11 日，宏謙成為雙北首家脂肪肝篩檢專案合作診所，為約三十位民眾完成 FibroScan 肝臟掃描，每份報告由院長親自判讀、當面說明。</p>
   <span class="meta">閱讀約 2 分鐘</span>
 </a></div>
@@ -109,23 +109,19 @@
     <h2>減重不是一個人的事</h2>
     <p>在宏謙，醫師、營養師與個管師分工照顧：醫師評估與調整治療，營養師為您做飲食規劃，個管師定期、主動關心您的狀況。我們有經驗豐富的團隊，幫您達成理想中的體重與健康。</p>
   </div>
-  <div class="band-actions"><a class="btn light" href="https://lin.ee/mIFpkdt">用 LINE 預約評估</a><a class="btn outline" href="https://hongchienclinic.com.tw">查看門診時間</a></div>
+  <div class="band-actions"><a class="btn btn-line light" href="https://lin.ee/mIFpkdt"><svg class="i fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.5 3 2 6.6 2 11c0 3.9 3.5 7.2 8.3 7.9.3.1.8.2.9.5.1.3.1.7 0 1l-.1.9c0 .3-.2 1 .9.5s6-3.5 8.2-6.1C21.9 14.2 22 12.6 22 11c0-4.4-4.5-8-10-8zm-3.8 10.5H6.3a.5.5 0 0 1-.5-.5V9a.5.5 0 0 1 1 0v3.5h1.4a.5.5 0 0 1 0 1zm1.9-.5a.5.5 0 0 1-1 0V9a.5.5 0 0 1 1 0zm4.6 0a.5.5 0 0 1-.9.3l-2-2.7V13a.5.5 0 0 1-1 0V9a.5.5 0 0 1 .9-.3l2 2.7V9a.5.5 0 0 1 1 0zm3.1-2.5a.5.5 0 0 1 0 1h-1.4v1h1.4a.5.5 0 0 1 0 1h-1.9a.5.5 0 0 1-.5-.5V9a.5.5 0 0 1 .5-.5h1.9a.5.5 0 0 1 0 1h-1.4v1z"/></svg><span>用 LINE 預約評估</span></a><a class="btn outline" href="https://hongchienclinic.com.tw">查看門診時間</a></div>
 </section>
 </main>
-<footer class="foot">
-  <div class="wrap foot-in">
-    <div>
-      <div class="foot-brand"><img src="/assets/img/logo-72.png" alt="" width="36" height="36"><b>宏謙聯合診所</b></div>
-      <p>241 新北市三重區仁愛街 517 號 1、2 樓（近徐匯中學捷運站 2 號出口）<br>電話 (02) 2987-7666　LINE @h29877666</p>
-      <p class="hours">早診 08:30–12:00　午診 14:30–17:30　晚診 18:30–21:30</p>
-      <p class="links"><a href="https://hongchienclinic.com.tw">診所官網</a> · <a href="https://www.facebook.com/JoeLinClinic/">Facebook</a> · <a href="https://lin.ee/mIFpkdt">LINE 官方帳號</a></p>
-    </div>
-    <div class="cta-box">
-      <p><b>想開始，或療程中有疑問？</b><br>用 LINE 告訴我們，個管師會協助安排門診與追蹤。</p>
-      <a class="btn" href="https://lin.ee/mIFpkdt">用 LINE 聯絡宏謙</a>
+<footer class="ftr">
+  <div class="wrap ftr-top">
+    <p class="ftr-big">把體重減下來，<br>也把<em>健康</em>留在身上。</p>
+    <div class="ftr-cols">
+      <div><h3>宏謙聯合診所</h3><p>241 新北市三重區仁愛街 517 號 1、2 樓（近徐匯中學捷運站 2 號出口）</p><p>(02) 2987-7666</p><p><a href="https://hongchienclinic.com.tw#hours">門診時間</a></p></div>
+      <div><h3>衛教專區</h3><p><a href="/start/">開始前</a></p><p><a href="/during/">療程中</a></p><p><a href="/maintain/">維持期</a></p><p><a href="/articles/">全部文章</a></p><p><a href="/faq/">常見問題</a></p></div>
+      <div><h3>聯絡我們</h3><p><a href="https://lin.ee/mIFpkdt">LINE @h29877666</a></p><p><a href="https://www.facebook.com/JoeLinClinic/">Facebook 粉絲專頁</a></p><p><a href="https://hongchienclinic.com.tw">診所官網</a></p></div>
     </div>
   </div>
-  <div class="wrap disclaimer">本站內容為健康衛教資訊，不能取代醫師診斷與處方；用藥、劑量與追蹤安排請以門診醫師的評估為準。<br>© 2026 宏謙聯合診所</div>
+  <div class="wrap ftr-bot"><p>本站內容為健康衛教資訊，不能取代醫師診斷與處方；用藥、劑量與追蹤安排請以門診醫師的評估為準。</p><p>© 2026 宏謙聯合診所</p></div>
 </footer>
 </body>
 </html>
