@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
-"""Umami Cloud 月報：透過「分享連結」讀取上個月（或指定月份）的流量，印出 Markdown 摘要。
-用法：py umami_report.py            → 上個月
-      py umami_report.py 2026-10    → 指定月份
+"""Umami Cloud 流量報表：透過「分享連結」讀取流量，印出 Markdown 摘要（衛教站 + 官網）。
+用法：py umami_report.py week             → 本週（週一 00:00 到現在；週日晚上跑就是整週）
+      py umami_report.py week 2026-10-11  → 該日期所在的那一週（週一到週日）
+      py umami_report.py                  → 上個月
+      py umami_report.py 2026-10          → 指定月份
 不需要 API key；只要 Umami 後台的 Share 連結還存在就能用。"""
 import sys, os, json, datetime as dt, urllib.request, urllib.parse
 try:
@@ -28,55 +30,74 @@ def month_range(arg):
     end = dt.datetime(y + (m == 12), (m % 12) + 1, 1, tzinfo=TZ)
     return y, m, start, min(end, today)
 
+def week_range(arg):
+    now = dt.datetime.now(TZ)
+    day = dt.datetime.strptime(arg, "%Y-%m-%d").replace(tzinfo=TZ) if arg else now
+    start = (day - dt.timedelta(days=day.weekday())).replace(hour=0, minute=0, second=0, microsecond=0)
+    return start, min(start + dt.timedelta(days=7), now)
+
 def fetch(path, headers=None, **params):
     url = f"{BASE}{path}" + (f"?{urllib.parse.urlencode(params)}" if params else "")
     req = urllib.request.Request(url, headers={"Accept": "application/json", "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) monthly-report", **(headers or {})})
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.load(r)
 
-def pct(cur, before):
+def pct(cur, before, prev="上月"):
     if not before:
-        return "（上月無資料）"
+        return f"（{prev}無資料）"
     d = (cur - before) / before * 100
-    return f"（較上月 {'+' if d >= 0 else ''}{d:.0f}%）"
+    return f"（較{prev} {'+' if d >= 0 else ''}{d:.0f}%）"
 
-def main():
-    y, m, start, end = month_range(sys.argv[1] if len(sys.argv) > 1 else None)
-    s, e = int(start.timestamp() * 1000), int(end.timestamp() * 1000)
-    token = fetch(f"/share/{SHARE_ID}")["token"]
-    H = {"x-umami-share-token": token, "x-umami-share-context": "1"}
+NAMES = {"/": "首頁", "/faq/": "常見問題", "/start/": "開始前", "/during/": "療程中", "/maintain/": "維持期", "/articles/": "全部文章", "/fattyliver/": "脂肪肝篩檢活動"}
+
+def site_block(title, host, H, s, e, prev):
     W = f"/websites/{WEBSITE_ID}"
-    # 官網與衛教站共用同一個 Umami 網站 ID，用 hostname 區分
-    stats = fetch(f"{W}/stats", H, startAt=s, endAt=e, hostname=SLIM_HOST)
-    paths = fetch(f"{W}/metrics", H, startAt=s, endAt=e, type="path", limit=8, hostname=SLIM_HOST)
-    refs = fetch(f"{W}/metrics", H, startAt=s, endAt=e, type="referrer", limit=6, hostname=SLIM_HOST)
-    devs = fetch(f"{W}/metrics", H, startAt=s, endAt=e, type="device", limit=5, hostname=SLIM_HOST)
-    o_stats = fetch(f"{W}/stats", H, startAt=s, endAt=e, hostname=OFFICIAL_HOST)
-    o_refs = fetch(f"{W}/metrics", H, startAt=s, endAt=e, type="referrer", limit=6, hostname=OFFICIAL_HOST)
-    o_utm = fetch(f"{W}/metrics", H, startAt=s, endAt=e, type="query", limit=6, hostname=OFFICIAL_HOST)
+    stats = fetch(f"{W}/stats", H, startAt=s, endAt=e, hostname=host)
+    paths = fetch(f"{W}/metrics", H, startAt=s, endAt=e, type="path", limit=8, hostname=host)
+    refs = fetch(f"{W}/metrics", H, startAt=s, endAt=e, type="referrer", limit=6, hostname=host)
+    devs = fetch(f"{W}/metrics", H, startAt=s, endAt=e, type="device", limit=5, hostname=host)
     cmp_ = stats.get("comparison", {})
     pv, vis, visits, tt = (stats.get(k, 0) for k in ("pageviews", "visitors", "visits", "totaltime"))
     avg = (tt / visits) if visits else 0
-    names = {"/": "首頁", "/faq/": "常見問題", "/start/": "開始前", "/during/": "療程中", "/maintain/": "維持期", "/articles/": "全部文章"}
-    out = [f"# 宏謙健康減重指南 流量月報 {y} 年 {m} 月", "",
-           f"- 瀏覽數：{pv} {pct(pv, cmp_.get('pageviews', 0))}",
-           f"- 不重複訪客：{vis} {pct(vis, cmp_.get('visitors', 0))}",
+    out = [f"## {title}", "",
+           f"- 瀏覽數：{pv} {pct(pv, cmp_.get('pageviews', 0), prev)}",
+           f"- 不重複訪客：{vis} {pct(vis, cmp_.get('visitors', 0), prev)}",
            f"- 造訪次數：{visits}，平均每次停留 {avg/60:.1f} 分鐘", "",
-           "## 最多人看的頁面"]
-    out += [f"- {names.get(r['x'], r['x'])}：{r['y']}" for r in paths] or ["- （無資料）"]
-    out += ["", "## 訪客從哪裡來"]
+           "### 最多人看的頁面"]
+    out += [f"- {NAMES.get(r['x'], r['x'])}：{r['y']}" for r in paths] or ["- （無資料）"]
+    out += ["", "### 訪客從哪裡來（有記錄到來源的）"]
     out += [f"- {r['x'] or '直接輸入／LINE 等 App 內'}：{r['y']}" for r in refs] or ["- （無資料）"]
-    out += ["", "## 裝置"]
+    out += ["", "### 裝置"]
     out += [f"- {r['x']}：{r['y']}" for r in devs] or ["- （無資料）"]
-    o_cmp = o_stats.get("comparison", {})
-    out += ["", "## 官網 hongchienclinic.com.tw（2026-10-04 起統計）",
-            f"- 瀏覽數：{o_stats.get('pageviews', 0)} {pct(o_stats.get('pageviews', 0), o_cmp.get('pageviews', 0))}",
-            f"- 不重複訪客：{o_stats.get('visitors', 0)} {pct(o_stats.get('visitors', 0), o_cmp.get('visitors', 0))}",
-            "- 訪客來源：" + ("、".join(f"{r['x']} {r['y']}" for r in o_refs) or "（無資料）"),
-            "- 網址參數（廣告 utm 等）：" + ("、".join(f"{r['x']} {r['y']}" for r in o_utm) or "（無資料）")]
+    return out
+
+def ad_clicks(H, s, e):
+    """官網網址帶 OpenAI 廣告參數（oppref= 為廣告點擊自動附加；utm_source=openai 為手動設定）的瀏覽數。"""
+    rows = fetch(f"/websites/{WEBSITE_ID}/metrics", H, startAt=s, endAt=e, type="query", limit=500, hostname=OFFICIAL_HOST)
+    return sum(r["y"] for r in rows if "oppref=" in r["x"] or "utm_source=openai" in r["x"])
+
+def main():
+    args = sys.argv[1:]
+    if args and args[0] == "week":
+        start, end = week_range(args[1] if len(args) > 1 else None)
+        last = start + dt.timedelta(days=6)
+        head = f"# 宏謙網站流量週報 {start:%Y/%m/%d}–{last:%m/%d}"
+        prev, name = "上週", f"week-{start:%Y-%m-%d}"
+    else:
+        y, m, start, end = month_range(args[0] if args else None)
+        head = f"# 宏謙網站流量月報 {y} 年 {m} 月"
+        prev, name = "上月", f"{y}-{m:02d}"
+    s, e = int(start.timestamp() * 1000), int(end.timestamp() * 1000)
+    token = fetch(f"/share/{SHARE_ID}")["token"]
+    H = {"x-umami-share-token": token, "x-umami-share-context": "1"}
+    # 官網與衛教站共用同一個 Umami 網站 ID，用 hostname 區分
+    out = [head, f"（統計區間：{start:%m/%d %H:%M} – {end:%m/%d %H:%M}）", ""]
+    out += site_block("官網 hongchienclinic.com.tw（2026-10-04 起統計）", OFFICIAL_HOST, H, s, e, prev)
+    out += ["", "### OpenAI 廣告", f"- 帶廣告參數進站的瀏覽數：{ad_clicks(H, s, e)}", ""]
+    out += site_block("衛教站 slim.hongchienclinic.com.tw", SLIM_HOST, H, s, e, prev)
     text = "\n".join(out)
     os.makedirs(os.path.join(HERE, "reports"), exist_ok=True)
-    with open(os.path.join(HERE, "reports", f"{y}-{m:02d}.md"), "w", encoding="utf-8") as f:
+    with open(os.path.join(HERE, "reports", f"{name}.md"), "w", encoding="utf-8") as f:
         f.write(text)
     print(text)
 
