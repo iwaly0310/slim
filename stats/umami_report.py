@@ -11,6 +11,8 @@ except Exception:
 
 WEBSITE_ID = "7cadf1bf-b05b-4c80-a86a-5e7b7192b3e0"
 SHARE_ID = "8VOWMkwpFYp1fzl1"
+SLIM_HOST = "slim.hongchienclinic.com.tw"
+OFFICIAL_HOST = "hongchienclinic.com.tw"
 BASE = "https://cloud.umami.is/analytics/us/api"
 HERE = os.path.dirname(os.path.abspath(__file__))
 TZ = dt.timezone(dt.timedelta(hours=8))
@@ -44,10 +46,14 @@ def main():
     token = fetch(f"/share/{SHARE_ID}")["token"]
     H = {"x-umami-share-token": token, "x-umami-share-context": "1"}
     W = f"/websites/{WEBSITE_ID}"
-    stats = fetch(f"{W}/stats", H, startAt=s, endAt=e)
-    paths = fetch(f"{W}/metrics", H, startAt=s, endAt=e, type="path", limit=8)
-    refs = fetch(f"{W}/metrics", H, startAt=s, endAt=e, type="referrer", limit=6)
-    devs = fetch(f"{W}/metrics", H, startAt=s, endAt=e, type="device", limit=5)
+    # 官網與衛教站共用同一個 Umami 網站 ID，用 hostname 區分
+    stats = fetch(f"{W}/stats", H, startAt=s, endAt=e, hostname=SLIM_HOST)
+    paths = fetch(f"{W}/metrics", H, startAt=s, endAt=e, type="path", limit=8, hostname=SLIM_HOST)
+    refs = fetch(f"{W}/metrics", H, startAt=s, endAt=e, type="referrer", limit=6, hostname=SLIM_HOST)
+    devs = fetch(f"{W}/metrics", H, startAt=s, endAt=e, type="device", limit=5, hostname=SLIM_HOST)
+    o_stats = fetch(f"{W}/stats", H, startAt=s, endAt=e, hostname=OFFICIAL_HOST)
+    o_refs = fetch(f"{W}/metrics", H, startAt=s, endAt=e, type="referrer", limit=6, hostname=OFFICIAL_HOST)
+    o_utm = fetch(f"{W}/metrics", H, startAt=s, endAt=e, type="query", limit=6, hostname=OFFICIAL_HOST)
     cmp_ = stats.get("comparison", {})
     pv, vis, visits, tt = (stats.get(k, 0) for k in ("pageviews", "visitors", "visits", "totaltime"))
     avg = (tt / visits) if visits else 0
@@ -62,6 +68,12 @@ def main():
     out += [f"- {r['x'] or '直接輸入／LINE 等 App 內'}：{r['y']}" for r in refs] or ["- （無資料）"]
     out += ["", "## 裝置"]
     out += [f"- {r['x']}：{r['y']}" for r in devs] or ["- （無資料）"]
+    o_cmp = o_stats.get("comparison", {})
+    out += ["", "## 官網 hongchienclinic.com.tw（2026-10-04 起統計）",
+            f"- 瀏覽數：{o_stats.get('pageviews', 0)} {pct(o_stats.get('pageviews', 0), o_cmp.get('pageviews', 0))}",
+            f"- 不重複訪客：{o_stats.get('visitors', 0)} {pct(o_stats.get('visitors', 0), o_cmp.get('visitors', 0))}",
+            "- 訪客來源：" + ("、".join(f"{r['x']} {r['y']}" for r in o_refs) or "（無資料）"),
+            "- 網址參數（廣告 utm 等）：" + ("、".join(f"{r['x']} {r['y']}" for r in o_utm) or "（無資料）")]
     text = "\n".join(out)
     os.makedirs(os.path.join(HERE, "reports"), exist_ok=True)
     with open(os.path.join(HERE, "reports", f"{y}-{m:02d}.md"), "w", encoding="utf-8") as f:
