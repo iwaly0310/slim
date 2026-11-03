@@ -5,7 +5,7 @@
 
   const hdr = $("[data-hdr]");
   const onScroll = () => hdr && hdr.classList.toggle("is-stuck", scrollY > 8);
-  addEventListener("scroll", onScroll, { passive: true }); onScroll();
+  addEventListener("scroll", onScroll, { passive: true }); requestAnimationFrame(onScroll);
 
   const btn = $("[data-menu]"), drawer = $("[data-drawer]");
   if (btn && drawer) {

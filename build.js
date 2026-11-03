@@ -97,7 +97,9 @@ function layout({ title, description, canonical, body, ogImage, narrow, jsonld }
 <link rel="apple-touch-icon" href="/assets/img/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=optional" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=optional"></noscript>
 <script defer src="https://cloud.umami.is/script.js" data-website-id="7cadf1bf-b05b-4c80-a86a-5e7b7192b3e0"></script>
 <link rel="stylesheet" href="/assets/style.css">
 <script src="/assets/site.js" defer></script>
@@ -107,7 +109,7 @@ ${jsonld ? `<script type="application/ld+json">${JSON.stringify(jsonld)}</script
 <a class="skip" href="#main">跳到主要內容</a>
 <header class="hdr" data-hdr>
   <div class="hdr-in">
-    <a class="brand" href="/" aria-label="宏謙健康減重指南 首頁"><img src="/assets/img/logo-72.png" alt="" width="44" height="44"><span class="brand-t"><b>宏謙健康減重指南</b><small>宏謙聯合診所 衛教專區</small></span></a>
+    <a class="brand" href="/" aria-label="宏謙健康減重指南 首頁"><img src="/assets/img/logo-88.png" srcset="/assets/img/logo-88.png 2x, /assets/img/logo-132.png 3x" alt="" width="44" height="44"><span class="brand-t"><b>宏謙健康減重指南</b><small>宏謙聯合診所 衛教專區</small></span></a>
     <nav class="nav" aria-label="主選單">${nav.map(([t, h]) => `<a href="${h}"${cur === h ? ' aria-current="page"' : ''}>${t}</a>`).join('')}<a class="ext" href="${site.clinic.website}">診所官網${IC.ext}</a></nav>
     <a class="btn btn-line hdr-cta" href="${site.clinic.line}">${IC.line}<span>LINE 詢問</span></a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="drawer" data-menu>${IC.menu}<span class="sr">開啟選單</span></button>
@@ -186,7 +188,7 @@ const urls = ['/'];
     <div class="hero-actions"><a class="btn btn-sun" href="/start/">我正準備開始${IC.arrow}</a><a class="btn ghost" href="/during/">我在療程中</a></div>
     <p class="hero-note">想先認識我們？醫師簡介、門診時間、交通方式都在 <a href="${site.clinic.website}">診所官網</a>。</p>
   </div>
-  <figure class="hero-img"><img src="/assets/img/doctor-explain.jpg" alt="宏謙聯合診所院長在診間向患者說明報告" width="1000" height="750"><figcaption>報告不是印出來就交給您帶回家。每一份，都由醫師當面說明。</figcaption></figure>
+  <figure class="hero-img"><img src="/assets/img/doctor-explain-800.webp" srcset="/assets/img/doctor-explain-480.webp 480w, /assets/img/doctor-explain-800.webp 800w, /assets/img/doctor-explain-1000.webp 1000w" sizes="(max-width: 820px) min(92vw, 420px), 42vw" alt="宏謙聯合診所院長在診間向患者說明報告" width="1000" height="750" fetchpriority="high"><figcaption>報告不是印出來就交給您帶回家。每一份，都由醫師當面說明。</figcaption></figure>
 </section>
 
 <section>
